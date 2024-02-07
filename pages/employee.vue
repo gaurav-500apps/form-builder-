@@ -7,43 +7,43 @@ const employeeArray = [
     type: "text",
     placeholder: "Enter Name",
     text: "Enter Name",
-    value: ""
+    value: "",
   },
   {
     name: "age",
     type: "number",
     placeholder: "Enter Age",
     text: "Enter Age",
-    value: ""
+    value: "",
   },
   {
     name: "gender",
     type: "select",
     selectedArray: ["male", "female"],
     placeholder: "Select Gender",
-    value: ""
+    value: "",
   },
   {
     name: "dateofjoining",
     type: "date",
-    value: ""
+    value: "",
   },
   {
     name: "designation",
     type: "text",
     placeholder: "Designation",
     text: "Designation",
-    value: ""
+    value: "",
   },
 ];
 
 const showForm = ref(false);
-const showEditForm = ref(false)
-const editIndex = ref(null)
-const editValues = ref([])
+const showEditForm = ref(false);
+const editIndex = ref(null);
+const editValues = ref([]);
 
 const toggleForm = () => {
-  showEditForm.value =  false;
+  showEditForm.value = false;
   showForm.value = !showForm.value;
 };
 
@@ -59,42 +59,37 @@ const handleSubmit = (data) => {
   localStorage.setItem("employee Data", JSON.stringify(getEmployee.value));
 };
 
-
-
 // for deleting ---------------------------------------------------------
 const deleteEmployee = (index) => {
   getEmployee.value.splice(index, 1);
   localStorage.setItem("employee Data", JSON.stringify(getEmployee.value));
 };
 
-
-
 // for editing ---------------------------------------------------------
 // to edit the value
 const editEmployee = (employee, index) => {
   showForm.value = false;
-   showEditForm.value = !showEditForm.value;
-   editIndex.value = index;
-   editValues.value = [];
-   const newArray = JSON.parse(JSON.stringify(employeeArray));
+  showEditForm.value = !showEditForm.value;
+  editIndex.value = index;
+  editValues.value = [];
+  const newArray = JSON.parse(JSON.stringify(employeeArray));
 
-   editValues.value = newArray.map((item) => {
-      item.value = employee[item.name];
-      return item;
-   }) 
+  editValues.value = newArray.map((item) => {
+    item.value = employee[item.name];
+    return item;
+  });
   //  console.log( editValues.value)
 };
 
-// will run on subitting the data from the component
-const  handleEditEmployeeSubmit = (employee)=>{
-  console.log(employee)
+// will run on submitting the data from the component
+const handleEditEmployeeSubmit = (employee) => {
+  console.log(employee);
   getEmployee.value[editIndex.value] = employee;
   localStorage.setItem("employee Data", JSON.stringify(getEmployee.value));
   editValues.value = [];
-  showForm.value = false
-  showEditForm.value = false
-}
-
+  showForm.value = false;
+  showEditForm.value = false;
+};
 </script>
 
 <template>
@@ -107,7 +102,7 @@ const  handleEditEmployeeSubmit = (employee)=>{
       :employeeArray="employeeArray"
       :handleSubmit="handleSubmit"
     />
-     <!-- component to edit an employee -->
+    <!-- component to edit an employee -->
     <FormComponent
       v-if="showEditForm"
       :employeeArray="editValues"

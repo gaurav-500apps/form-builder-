@@ -4,11 +4,11 @@ const employeeArray = props.employeeArray;
 const inputValues = ref({});
 
 // to prefill the inputValues to show inside the v-model for editing them
-const fillValuesForEdit = ()=>{
-  employeeArray.forEach(element => {
-    inputValues.value[element.name] = element.value
+const fillValuesForEdit = () => {
+  employeeArray.forEach((element) => {
+    inputValues.value[element.name] = element.value;
   });
-}
+};
 fillValuesForEdit();
 
 const handleFormSubmit = () => {
@@ -20,7 +20,11 @@ const handleFormSubmit = () => {
   <form class="custom-form" @submit.prevent="handleFormSubmit">
     <div v-for="data in employeeArray" :key="data.id" class="form-group">
       <label class="form-label">{{ data.handleFormSubmittext }}</label>
-      <select v-if="data.type === 'select'" v-model="inputValues[data.name]" required>
+      <select
+        v-if="data.type === 'select'"
+        v-model="inputValues[data.name]"
+        required
+      >
         <option v-for="item in data.selectedArray" :value="item">
           {{ item }}
         </option>
