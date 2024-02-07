@@ -8,6 +8,8 @@
                 <ul class="flex gap-4">
                     <li><NuxtLink to="/">Home</NuxtLink></li>
                     <li><NuxtLink to="/employee">Employee</NuxtLink></li>
+                    <li><NuxtLink to="/login">login</NuxtLink></li>
+                    <li><NuxtLink to="/signup">signup</NuxtLink></li>
                 </ul>
         </nav>
     </header>

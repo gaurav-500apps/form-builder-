@@ -7,58 +7,117 @@ const employeeArray = [
     type: "text",
     placeholder: "Enter Name",
     text: "Enter Name",
+    value: ""
   },
   {
     name: "age",
     type: "number",
     placeholder: "Enter Age",
     text: "Enter Age",
+    value: ""
   },
   {
     name: "gender",
     type: "select",
     selectedArray: ["male", "female"],
     placeholder: "Select Gender",
+    value: ""
   },
   {
     name: "dateofjoining",
     type: "date",
+    value: ""
   },
   {
     name: "designation",
     type: "text",
     placeholder: "Designation",
     text: "Designation",
+    value: ""
   },
 ];
+
+const showForm = ref(false);
+const showEditForm = ref(false)
+const editIndex = ref(null)
+const editValues = ref([])
+
+const toggleForm = () => {
+  showEditForm.value =  false;
+  showForm.value = !showForm.value;
+};
+
 const getEmployee = ref([]);
 
 onMounted(() => {
   getEmployee.value = JSON.parse(localStorage.getItem("employee Data")) || [];
 });
 
+// for creating ---------------------------------------------------------
 const handleSubmit = (data) => {
   getEmployee.value.push(data);
   localStorage.setItem("employee Data", JSON.stringify(getEmployee.value));
 };
 
+
+
+// for deleting ---------------------------------------------------------
 const deleteEmployee = (index) => {
   getEmployee.value.splice(index, 1);
   localStorage.setItem("employee Data", JSON.stringify(getEmployee.value));
 };
+
+
+
+// for editing ---------------------------------------------------------
+// to edit the value
+const editEmployee = (employee, index) => {
+  showForm.value = false;
+   showEditForm.value = !showEditForm.value;
+   editIndex.value = index;
+   editValues.value = [];
+   const newArray = JSON.parse(JSON.stringify(employeeArray));
+
+   editValues.value = newArray.map((item) => {
+      item.value = employee[item.name];
+      return item;
+   }) 
+  //  console.log( editValues.value)
+};
+
+// will run on subitting the data from the component
+const  handleEditEmployeeSubmit = (employee)=>{
+  console.log(employee)
+  getEmployee.value[editIndex.value] = employee;
+  localStorage.setItem("employee Data", JSON.stringify(getEmployee.value));
+  editValues.value = [];
+  showForm.value = false
+  showEditForm.value = false
+}
+
 </script>
 
 <template>
+  <h1 class="text-2xl mt-4">Employee Details</h1>
   <div class="flex flex-col items-center mt-4 h-screen">
-    <h1 class="text-2xl">Employee Form</h1>
+    <button class="addbutton" @click="toggleForm">Add Employee</button>
+    <!-- component to create an employee -->
     <FormComponent
+      v-if="showForm"
       :employeeArray="employeeArray"
       :handleSubmit="handleSubmit"
     />
+     <!-- component to edit an employee -->
+    <FormComponent
+      v-if="showEditForm"
+      :employeeArray="editValues"
+      :handleSubmit="handleEditEmployeeSubmit"
+    />
   </div>
+
   <div class="formbox">
     <!-- v-if="getEmployee.length > 0" -->
-    <div>
+    <div v-if="!showForm && !showEditForm">
       <table class="w-full text-center border-collapse">
         <thead>
           <tr>
@@ -90,7 +149,7 @@ const deleteEmployee = (index) => {
 
             <td class="border p-2">
               <button
-                @click="editEmployee(employee)"
+                @click="editEmployee(employee, index)"
                 class="bg-blue-500 text-white px-2 py-1 rounded mr-2"
               >
                 Edit
@@ -111,8 +170,17 @@ const deleteEmployee = (index) => {
 </template>
 
 <style scoped>
-.formbox{
-    /* border: 1px solid red; */
-    margin-top: -600px;
+.formbox {
+  /* border: 1px solid red; */
+  margin-top: -600px;
+}
+.addbutton {
+  background-color: #007bff;
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
 }
 </style>
