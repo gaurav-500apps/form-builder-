@@ -188,7 +188,7 @@ watchEffect(() => {
   margin-top: -600px;
 }
 .addbutton {
-  background-color: #007bff;
+  background-color: teal;
   color: #ffffff;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
